@@ -3,34 +3,52 @@ import { gql } from "apollo-server";
 const typeDefs = gql`
   type Query {
     tasks: [Task]
+    dishes: [Dish]
     orders: [Order]
   }
 
   type Mutation {
     createTask(input: TaskInput): Task
+    createDish(input: DishInput): Dish
     createOrder(input: OrderInput): Order
+    addDishToOrder(id_order: ID, id_dish: ID): Order
   }
 
-  # input Order
+  # ------ Dish  -------- #
+  type Dish {
+    _id: ID
+    name: String
+    price: Float
+    category: String
+    state: String
+  }
+
+  input DishInput {
+    name: String!
+    price: Float!
+    category: String!
+  }
+
+  # ------  Order  -------- #
   input OrderInput {
     table: Int!
   }
+  # Definición de Order
+  type Order {
+    _id: ID
+    number: String
+    date: String
+    time: String
+    table: Int
+    closed: Boolean
+    dishes: [Dish]
+  }
 
-  # Input task
+  # ------  Task  -------- #
   input TaskInput {
     title: String!
     description: String!
     number: Int
-  }
-
-  # Definición de Order
-  type Order {
-    _id: ID
-    invoice: String
-    date: String
-    time: String
-    table: Int
-    pending: Boolean
   }
 
   # Definición del tipo Task

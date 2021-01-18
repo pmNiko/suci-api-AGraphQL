@@ -12,9 +12,9 @@ const invDate = date.format(now, "DD/MM/YYYY");
 const orderSchema = new Schema(
   {
     // generación con invoice-number invNum.next('2021/01/FAC001')
-    invoice: {
+    number: {
       type: String,
-      default: "FACT-000000",
+      default: "ORD-000000",
     },
     // Fecha y Hora a travéz de date-and-time --save
     date: {
@@ -29,27 +29,16 @@ const orderSchema = new Schema(
       type: Number,
       required: true,
     },
-    pending: {
+    closed: {
       type: Boolean,
-      default: true,
+      default: false,
     },
+    dishes: [],
   },
   {
     timestamps: true,
     versionKey: false,
   }
 );
-
-// orderSchema.pre("save", async function (next) {
-//   let lastOrder = await orderSchema.find({}).sort({ _id: -1 }).limit(1).lean();
-//   let invoice = lastOrder[0].invoice;
-//   console.log("Este: ", invoice);
-//   if (invoice === undefined) {
-//     fact = "FACT-000000";
-//   } else {
-//     fact = invoice;
-//   }
-//   next();
-// });
 
 export default model("Order", orderSchema);

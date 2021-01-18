@@ -1,23 +1,42 @@
 import { tasks } from "../utils/tasks";
-import Order from "../../models/Order";
 import invNum from "invoice-number";
+import Order from "../../models/Order";
+import Dish from "../../models/Dish";
 
 export const Mutation = {
   createTask(_, { input }) {
     input._id = tasks.length;
     tasks.push(input);
-    console.log("paso por aca");
     return input;
   },
   createOrder: async (_, { input }) => {
     let lastOrder = await Order.find({}).sort({ _id: -1 }).limit(1).lean();
     if (lastOrder.length != 0) {
-      input.invoice = invNum.next(lastOrder[0].invoice);
-      // console.log("Este es el input: ", input);
+      input.number = invNum.next(lastOrder[0].number);
     }
+    return await new Order(input).save();
+  },
+  createDish: async (_, { input }) => {
+    let dish = new Dish(input);
+    return await dish.save();
+  },
+  addDishToOrder: async (_, { id_order, id_dish }) => {
+    let dish = await Dish.findById(id_dish).lean();
+    let order = await Order.findById(id_order).lean();
 
-    let order = new Order(input);
+    dish._id = order.dishes.length;
+    delete dish.createdAt;
+    delete dish.updatedAt;
+    dish.state = "pending";
 
-    return await order.save();
+    let orderUpdate = await Order.findByIdAndUpdate(
+      id_order,
+      { $push: { dishes: dish } },
+      {
+        new: true,
+      }
+    );
+
+    return orderUpdate;
   },
 };
