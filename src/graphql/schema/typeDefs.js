@@ -12,6 +12,7 @@ const typeDefs = gql`
     createDish(input: DishInput): Dish
     createOrder(input: OrderInput): Order
     closeOrder(order_id: ID): Order
+    deleteOrder(order_id: ID): Order
     addDishToOrder(order_id: ID, dish_id: ID): Order
     dishPending(order_id: ID, dish_id: ID): Order
     dishReady(order_id: ID, dish_id: ID): Order

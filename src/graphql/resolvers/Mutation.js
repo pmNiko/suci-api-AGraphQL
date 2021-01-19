@@ -27,7 +27,17 @@ export const Mutation = {
     );
     return order;
   },
-
+  // ----- Mutación para eliminar una comanda ---- //
+  deleteOrder: async (_, { order_id }) => {
+    let order = await Order.findOneAndRemove(order_id, function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Deleted : ", docs);
+      }
+    });
+    return order;
+  },
   // ----- Mutación para instamciar un plato ---- //
   createDish: async (_, { input }) => {
     let dish = new Dish(input);
