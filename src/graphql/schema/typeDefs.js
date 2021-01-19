@@ -11,8 +11,11 @@ const typeDefs = gql`
     createTask(input: TaskInput): Task
     createDish(input: DishInput): Dish
     createOrder(input: OrderInput): Order
-    addDishToOrder(id_order: ID, id_dish: ID): Order
-    dishReady(id_order: ID, dish_id: ID): Order
+    closeOrder(order_id: ID): Order
+    addDishToOrder(order_id: ID, dish_id: ID): Order
+    dishPending(order_id: ID, dish_id: ID): Order
+    dishReady(order_id: ID, dish_id: ID): Order
+    dishDelivered(order_id: ID, dish_id: ID): Order
   }
 
   # ------ Dish  -------- #
