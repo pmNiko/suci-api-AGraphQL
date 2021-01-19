@@ -40,19 +40,14 @@ export const Mutation = {
     return orderUpdate;
   },
   dishReady: async (_, { id_order, dish_id }) => {
-    let order = await Order.updateOne(
+    let order = await Order.findOneAndUpdate(
       { _id: { $eq: id_order } },
-      {
-        $set: {
-          "dishes.$[dish].state": "ready",
-        },
-      },
+      { $set: { "dishes.$[dish].state": "ready" } },
       {
         arrayFilters: [{ "dish._id": { $eq: dish_id } }],
+        new: true,
       }
     );
-
-    console.log(order);
 
     return order;
   },
