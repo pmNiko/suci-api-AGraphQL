@@ -21,10 +21,10 @@ export const Mutation = {
     return await dish.save();
   },
   addDishToOrder: async (_, { id_order, id_dish }) => {
-    let dish = await Dish.findById(id_dish).lean();
     let order = await Order.findById(id_order).lean();
+    let dish = await Dish.findById(id_dish).lean();
 
-    dish._id = order.dishes.length;
+    dish._id = order.dishes.length.toString();
     delete dish.createdAt;
     delete dish.updatedAt;
     dish.state = "pending";
@@ -38,5 +38,21 @@ export const Mutation = {
     );
 
     return orderUpdate;
+  },
+  dishReady: async (_, { id_order, dish_id }) => {
+    let order = await Order.updateOne(
+      { _id: { $eq: id_order } },
+      {
+        $set: {
+          "dishes.$[dish].state": "ready",
+        },
+      },
+      {
+        arrayFilters: [{ "dish._id": { $eq: dish_id } }],
+      }
+    );
+    console.log(order);
+
+    return "Actualizo";
   },
 };
