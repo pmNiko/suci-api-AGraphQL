@@ -14,6 +14,7 @@ const typeDefs = gql`
     closeOrder(order_id: ID): Order
     deleteOrder(order_id: ID): Order
     addDishToOrder(order_id: ID, dish_id: ID): Order
+    popDishToOrder(order_id: ID, dish_id: ID): Order
     dishPending(order_id: ID, dish_id: ID): Order
     dishReady(order_id: ID, dish_id: ID): Order
     dishDelivered(order_id: ID, dish_id: ID): Order

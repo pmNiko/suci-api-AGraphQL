@@ -41,8 +41,14 @@ export const Mutation = {
   addDishToOrder: async (_, { order_id, dish_id }) => {
     let order = await Order.findById(order_id).lean();
     let dish = await Dish.findById(dish_id).lean();
+    let dishes = order.dishes;
 
-    dish._id = order.dishes.length.toString();
+    if (dishes.length === 0) {
+      dish._id = "0";
+    } else {
+      dish._id = invNum.next(dishes[dishes.length - 1]._id);
+    }
+
     delete dish.createdAt;
     delete dish.updatedAt;
     dish.state = "pending";
@@ -53,6 +59,16 @@ export const Mutation = {
       {
         new: true,
       }
+    );
+
+    return orderUpdate;
+  },
+  // ----- Mutación para quitar un plato a una comanda ---- //
+  popDishToOrder: async (_, { order_id, dish_id }) => {
+    let orderUpdate = await Order.findOneAndUpdate(
+      { _id: order_id },
+      { $pull: { dishes: { _id: dish_id } } },
+      { new: true }
     );
 
     return orderUpdate;
