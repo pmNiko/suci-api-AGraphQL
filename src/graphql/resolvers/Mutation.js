@@ -51,8 +51,9 @@ export const Mutation = {
         arrayFilters: [{ "dish._id": { $eq: dish_id } }],
       }
     );
+
     console.log(order);
 
-    return "Actualizo";
+    return order;
   },
 };
