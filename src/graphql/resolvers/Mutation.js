@@ -52,6 +52,7 @@ export const Mutation = {
     delete dish.createdAt;
     delete dish.updatedAt;
     dish.state = "pending";
+    dish.count = 1;
 
     let orderUpdate = await Order.findByIdAndUpdate(
       order_id,
@@ -72,6 +73,32 @@ export const Mutation = {
     );
 
     return orderUpdate;
+  },
+  // ----- Mutación para incrementar un plato en una comanda ---- //
+  incrementDishToOrder: async (_, { order_id, dish_id }) => {
+    let order = await Order.findOneAndUpdate(
+      { _id: { $eq: order_id } },
+      { $inc: { "dishes.$[dish].count": 1 } },
+      {
+        arrayFilters: [{ "dish._id": { $eq: dish_id } }],
+        new: true,
+      }
+    );
+
+    return order;
+  },
+  // ----- Mutación para decrementar un plato en una comanda ---- //
+  decrementDishToOrder: async (_, { order_id, dish_id }) => {
+    let order = await Order.findOneAndUpdate(
+      { _id: { $eq: order_id } },
+      { $inc: { "dishes.$[dish].count": -1 } },
+      {
+        arrayFilters: [{ "dish._id": { $eq: dish_id } }],
+        new: true,
+      }
+    );
+
+    return order;
   },
   // ----- Mutación para cambiar el estado un plato ---- //
   dishPending: async (_, { order_id, dish_id }) => {

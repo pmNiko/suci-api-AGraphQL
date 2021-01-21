@@ -5,6 +5,7 @@ const typeDefs = gql`
     tasks: [Task]
     dishes: [Dish]
     orders: [Order]
+    order(order_id: ID): Order
   }
 
   type Mutation {
@@ -15,6 +16,8 @@ const typeDefs = gql`
     deleteOrder(order_id: ID): Order
     addDishToOrder(order_id: ID, dish_id: ID): Order
     popDishToOrder(order_id: ID, dish_id: ID): Order
+    incrementDishToOrder(order_id: ID, dish_id: ID): Order
+    decrementDishToOrder(order_id: ID, dish_id: ID): Order
     dishPending(order_id: ID, dish_id: ID): Order
     dishReady(order_id: ID, dish_id: ID): Order
     dishDelivered(order_id: ID, dish_id: ID): Order
@@ -26,6 +29,7 @@ const typeDefs = gql`
     name: String
     price: Float
     category: String
+    count: Int
     state: String
   }
 
