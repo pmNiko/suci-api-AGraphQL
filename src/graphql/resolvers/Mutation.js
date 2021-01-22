@@ -33,9 +33,14 @@ export const Mutation = {
   },
   // ----- Mutación para cerrar una comanda ---- //
   closeOrder: async (_, { order_id }) => {
-    let order = await Order.findOneAndUpdate(
+    let order = await Order.findByIdAndUpdate(
       order_id,
       { $set: { closed: true } },
+      { new: true }
+    );
+    await Table.findOneAndUpdate(
+      { number: { $eq: order.table } },
+      { $unset: { order } },
       { new: true }
     );
     return order;
