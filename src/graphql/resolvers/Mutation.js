@@ -2,6 +2,7 @@ import { tasks } from "../utils/tasks";
 import invNum from "invoice-number";
 import Order from "../../models/Order";
 import Dish from "../../models/Dish";
+import Table from "../../models/Table";
 
 export const Mutation = {
   // mutación de prueba
@@ -10,17 +11,29 @@ export const Mutation = {
     tasks.push(input);
     return input;
   },
+  // ----- Mutación para instamciar un Mesa ---- //
+  createTable: async (_, { input }) => {
+    let table = new Table(input);
+    return await table.save();
+  },
   // ----- Mutación para instamciar una comanda ---- //
   createOrder: async (_, { input }) => {
     let lastOrder = await Order.find({}).sort({ _id: -1 }).limit(1).lean();
     if (lastOrder.length != 0) {
       input.number = invNum.next(lastOrder[0].number);
     }
-    return await new Order(input).save();
+    let order = await new Order(input).save();
+    console.log(order._id);
+    await Table.findOneAndUpdate(
+      { number: { $eq: input.table } },
+      { $set: { order: order._id } },
+      { new: true }
+    );
+    return order;
   },
   // ----- Mutación para cerrar una comanda ---- //
   closeOrder: async (_, { order_id }) => {
-    let order = await Order.findByIdAndUpdate(
+    let order = await Order.findOneAndUpdate(
       order_id,
       { $set: { closed: true } },
       { new: true }

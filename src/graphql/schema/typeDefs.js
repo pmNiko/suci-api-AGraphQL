@@ -6,12 +6,14 @@ const typeDefs = gql`
     dishes: [Dish]
     orders: [Order]
     order(order_id: ID): Order
+    tables: [Table]
   }
 
   type Mutation {
     createTask(input: TaskInput): Task
     createDish(input: DishInput): Dish
     createOrder(input: OrderInput): Order
+    createTable(input: TableInput): Table
     closeOrder(order_id: ID): Order
     deleteOrder(order_id: ID): Order
     addDishToOrder(order_id: ID, dish_id: ID): Order
@@ -23,6 +25,18 @@ const typeDefs = gql`
     dishDelivered(order_id: ID, dish_id: ID): Order
   }
 
+  # ------ Table  -------- #
+  type Table {
+    number: Int!
+    color: String!
+    free: Boolean
+    order: ID
+  }
+
+  input TableInput {
+    number: Int!
+    color: String!
+  }
   # ------ Dish  -------- #
   type Dish {
     _id: ID
