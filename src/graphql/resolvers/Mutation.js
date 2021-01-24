@@ -23,24 +23,29 @@ export const Mutation = {
       input.number = invNum.next(lastOrder[0].number);
     }
     let order = await new Order(input).save();
-    console.log(order._id);
+
     await Table.findOneAndUpdate(
       { number: { $eq: input.table } },
-      { $set: { order: order._id } },
+      { $set: { order: order._id, free: false } },
       { new: true }
     );
     return order;
   },
   // ----- Mutación para cerrar una comanda ---- //
   closeOrder: async (_, { order_id }) => {
-    let order = await Order.findByIdAndUpdate(
-      order_id,
+    let order = await Order.findOneAndUpdate(
+      { _id: { $eq: order_id } },
       { $set: { closed: true } },
       { new: true }
     );
     await Table.findOneAndUpdate(
       { number: { $eq: order.table } },
       { $unset: { order } },
+      { new: true }
+    );
+    await Table.findOneAndUpdate(
+      { number: { $eq: order.table } },
+      { $set: { free: true } },
       { new: true }
     );
     return order;
