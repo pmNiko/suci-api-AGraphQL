@@ -17,7 +17,8 @@ export const Mutation = {
     return await table.save();
   },
   // ----- Mutación para instamciar una comanda ---- //
-  createOrder: async (_, { input }) => {
+  createOrder: async (_, { table }) => {
+    let input = { table };
     let lastOrder = await Order.find({}).sort({ _id: -1 }).limit(1).lean();
     if (lastOrder.length != 0) {
       input.number = invNum.next(lastOrder[0].number);
@@ -25,7 +26,7 @@ export const Mutation = {
     let order = await new Order(input).save();
 
     await Table.findOneAndUpdate(
-      { number: { $eq: input.table } },
+      { number: { $eq: table } },
       { $set: { order: order._id, free: false } },
       { new: true }
     );

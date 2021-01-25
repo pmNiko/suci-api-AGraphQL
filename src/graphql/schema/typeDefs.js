@@ -12,7 +12,7 @@ const typeDefs = gql`
   type Mutation {
     createTask(input: TaskInput): Task
     createDish(input: DishInput): Dish
-    createOrder(input: OrderInput): Order
+    createOrder(table: Int): Order
     createTable(input: TableInput): Table
     closeOrder(order_id: ID): Order
     deleteOrder(order_id: ID): Order
