@@ -39,21 +39,13 @@ export const Mutation = {
       { $set: { closed: true } },
       { new: true }
     );
-    await Table.findOneAndUpdate(
-      { number: { $eq: order.table } },
-      { $unset: { order } },
-      { new: true }
-    );
-    await Table.findOneAndUpdate(
-      { number: { $eq: order.table } },
-      { $set: { free: true } },
-      { new: true }
-    );
+    resetTable(order);
     return order;
   },
   // ----- Mutación para eliminar una comanda ---- //
   deleteOrder: async (_, { order_id }) => {
     let order = await Order.findByIdAndDelete(order_id);
+    resetTable(order);
     return order;
   },
   // ----- Mutación para instamciar un plato ---- //
@@ -150,4 +142,17 @@ async function changeStateDish(order_id, dish_id, state) {
   );
 
   return order;
+}
+
+async function resetTable(order) {
+  await Table.findOneAndUpdate(
+    { number: { $eq: order.table } },
+    { $unset: { order } },
+    { new: true }
+  );
+  await Table.findOneAndUpdate(
+    { number: { $eq: order.table } },
+    { $set: { free: true } },
+    { new: true }
+  );
 }
