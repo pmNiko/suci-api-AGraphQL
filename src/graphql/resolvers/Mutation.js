@@ -120,11 +120,39 @@ export const Mutation = {
   dishPending: async (_, { order_id, dish_id }) => {
     return changeStateDish(order_id, dish_id, "pending");
   },
+  dishPreparing: async (_, { order_id, dish_id }) => {
+    return changeStateDish(order_id, dish_id, "preparing");
+  },
   dishReady: async (_, { order_id, dish_id }) => {
     return changeStateDish(order_id, dish_id, "ready");
   },
   dishDelivered: async (_, { order_id, dish_id }) => {
     return changeStateDish(order_id, dish_id, "delivered");
+  },
+  // ----- Mutación para cambiar el estado de multiples platos de una comanda ---- //
+  dishPendingToOrder: async (_, { order_id, dishes }) => {
+    dishes.map((ele) => {
+      const order = changeStateDish(order_id, ele.dish, "pending");
+    });
+    return "order.save()";
+  },
+  dishPreparingToOrder: async (_, { order_id, dishes }) => {
+    dishes.map((ele) => {
+      const order = changeStateDish(order_id, ele.dish, "preparing");
+    });
+    return "order.save()";
+  },
+  dishReadyToOrder: async (_, { order_id, dishes }) => {
+    dishes.map((ele) => {
+      const order = changeStateDish(order_id, ele.dish, "ready");
+    });
+    return "order.save()";
+  },
+  dishDeliveredToOrder: async (_, { order_id, dishes }) => {
+    dishes.map((ele) => {
+      const order = changeStateDish(order_id, ele.dish, "delivered");
+    });
+    return "order.save()";
   },
 };
 
@@ -144,12 +172,17 @@ async function changeStateDish(order_id, dish_id, state) {
   return order;
 }
 
+/*
+  Función para liberar una mesa
+*/
 async function resetTable(order) {
+  // Primero borra la order contenida de sus atributos
   await Table.findOneAndUpdate(
     { number: { $eq: order.table } },
     { $unset: { order } },
     { new: true }
   );
+  // Por ultimo cambia su estado y la deja libre
   await Table.findOneAndUpdate(
     { number: { $eq: order.table } },
     { $set: { free: true } },
