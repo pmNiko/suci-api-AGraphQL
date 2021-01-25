@@ -24,10 +24,10 @@ const typeDefs = gql`
     dishPreparing(order_id: ID, dish_id: ID): Order
     dishReady(order_id: ID, dish_id: ID): Order
     dishDelivered(order_id: ID, dish_id: ID): Order
-    dishPendingToOrder(order_id: ID, dishes: [DishArrayInput]): String
-    dishPreparingToOrder(order_id: ID, dishes: [DishArrayInput]): String
-    dishReadyToOrder(order_id: ID, dishes: [DishArrayInput]): String
-    dishDeliveredToOrder(order_id: ID, dishes: [DishArrayInput]): String
+    dishPendingToOrder(order_id: ID, dishes: [DishArrayInput]): Order
+    dishPreparingToOrder(order_id: ID, dishes: [DishArrayInput]): Order
+    dishReadyToOrder(order_id: ID, dishes: [DishArrayInput]): Order
+    dishDeliveredToOrder(order_id: ID, dishes: [DishArrayInput]): Order
   }
 
   # ------ Table  -------- #

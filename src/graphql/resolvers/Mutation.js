@@ -131,28 +131,32 @@ export const Mutation = {
   },
   // ----- Mutación para cambiar el estado de multiples platos de una comanda ---- //
   dishPendingToOrder: async (_, { order_id, dishes }) => {
+    let order = {};
     dishes.map((ele) => {
-      const order = changeStateDish(order_id, ele.dish, "pending");
+      order = changeStateDish(order_id, ele.dish, "pending");
     });
-    return "order.save()";
+    return order;
   },
   dishPreparingToOrder: async (_, { order_id, dishes }) => {
+    let order = {};
     dishes.map((ele) => {
-      const order = changeStateDish(order_id, ele.dish, "preparing");
+      order = changeStateDish(order_id, ele.dish, "preparing");
     });
-    return "order.save()";
+    return order;
   },
   dishReadyToOrder: async (_, { order_id, dishes }) => {
+    let order = {};
     dishes.map((ele) => {
-      const order = changeStateDish(order_id, ele.dish, "ready");
+      order = changeStateDish(order_id, ele.dish, "ready");
     });
-    return "order.save()";
+    return order;
   },
   dishDeliveredToOrder: async (_, { order_id, dishes }) => {
+    let order = {};
     dishes.map((ele) => {
-      const order = changeStateDish(order_id, ele.dish, "delivered");
+      order = changeStateDish(order_id, ele.dish, "delivered");
     });
-    return "order.save()";
+    return order;
   },
 };
 
