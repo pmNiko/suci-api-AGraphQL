@@ -24,10 +24,10 @@ const typeDefs = gql`
     dishPreparing(order_id: ID, dish_id: ID): Order
     dishReady(order_id: ID, dish_id: ID): Order
     dishDelivered(order_id: ID, dish_id: ID): Order
-    dishPendingToOrder(order_id: ID, dishes: [DishArrayInput]): Order
-    dishPreparingToOrder(order_id: ID, dishes: [DishArrayInput]): Order
-    dishReadyToOrder(order_id: ID, dishes: [DishArrayInput]): Order
-    dishDeliveredToOrder(order_id: ID, dishes: [DishArrayInput]): Order
+    dishPendingToOrder(order_id: ID, dishes: [ID]): Order
+    dishPreparingToOrder(order_id: ID, dishes: [ID]): Order
+    dishReadyToOrder(order_id: ID, dishes: [ID]): Order
+    dishDeliveredToOrder(order_id: ID, dishes: [ID]): Order
   }
 
   # ------ Table  -------- #
@@ -56,10 +56,6 @@ const typeDefs = gql`
     name: String!
     price: Float!
     category: String!
-  }
-
-  input DishArrayInput {
-    dish: ID
   }
 
   # ------  Order  -------- #

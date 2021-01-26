@@ -133,28 +133,29 @@ export const Mutation = {
   dishPendingToOrder: async (_, { order_id, dishes }) => {
     let order = {};
     dishes.map((ele) => {
-      order = changeStateDish(order_id, ele.dish, "pending");
+      order = changeStateDish(order_id, ele, "pending");
     });
     return order;
   },
   dishPreparingToOrder: async (_, { order_id, dishes }) => {
     let order = {};
     dishes.map((ele) => {
-      order = changeStateDish(order_id, ele.dish, "preparing");
+      order = changeStateDish(order_id, ele, "preparing");
     });
     return order;
   },
   dishReadyToOrder: async (_, { order_id, dishes }) => {
+    console.log(dishes);
     let order = {};
     dishes.map((ele) => {
-      order = changeStateDish(order_id, ele.dish, "ready");
+      order = changeStateDish(order_id, ele, "ready");
     });
     return order;
   },
   dishDeliveredToOrder: async (_, { order_id, dishes }) => {
     let order = {};
     dishes.map((ele) => {
-      order = changeStateDish(order_id, ele.dish, "delivered");
+      order = changeStateDish(order_id, ele, "delivered");
     });
     return order;
   },
