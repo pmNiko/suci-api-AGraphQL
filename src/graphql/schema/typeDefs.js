@@ -15,6 +15,7 @@ const typeDefs = gql`
     createOrder(table: Int): Order
     createTable(input: TableInput): Table
     closeOrder(order_id: ID): Order
+    payOrder(order_id: ID): Order
     deleteOrder(order_id: ID): Order
     addDishToOrder(order_id: ID, dish_id: ID): Order
     popDishToOrder(order_id: ID, dish_id: ID): Order
@@ -70,6 +71,7 @@ const typeDefs = gql`
     time: String
     table: Int
     closed: Boolean
+    paid: Boolean
     dishes: [Dish]
   }
 

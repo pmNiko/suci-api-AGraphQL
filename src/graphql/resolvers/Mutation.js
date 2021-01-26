@@ -42,6 +42,15 @@ export const Mutation = {
     resetTable(order);
     return order;
   },
+  // ----- Mutación para pagar una comanda ---- //
+  payOrder: async (_, { order_id }) => {
+    let order = await Order.findOneAndUpdate(
+      { _id: { $eq: order_id } },
+      { $set: { paid: true } },
+      { new: true }
+    );
+    return order;
+  },
   // ----- Mutación para eliminar una comanda ---- //
   deleteOrder: async (_, { order_id }) => {
     let order = await Order.findByIdAndDelete(order_id);
@@ -145,7 +154,6 @@ export const Mutation = {
     return order;
   },
   dishReadyToOrder: async (_, { order_id, dishes }) => {
-    console.log(dishes);
     let order = {};
     dishes.map((ele) => {
       order = changeStateDish(order_id, ele, "ready");
