@@ -33,6 +33,7 @@ const typeDefs = gql`
 
   # ------ Table  -------- #
   type Table {
+    _id: ID
     number: Int!
     color: String!
     free: Boolean
